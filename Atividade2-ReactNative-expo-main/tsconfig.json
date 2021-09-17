@@ -2,5 +2,5 @@
   "compilerOptions": {
     "strict":true
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base.json"
 }
