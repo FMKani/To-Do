@@ -6,6 +6,11 @@ import {TasksList } from '../components/TasksList';
 
 import { TodoInput } from '../components/TodoInput';
 
+interface TaskEdit {
+  id: number,
+  taskNewTitle: string
+}
+
 interface Task {
   id: number;
   title: string;
@@ -42,13 +47,36 @@ export function Home() {
 
   }
 
+  function handleEditTask({id, taskNewTitle}: TaskEdit) {
+    // TODO
+  }
+
   function handleToggleTaskDone(id: number) {
     //TODO - toggle task done if exists
        
   }
 
   function handleRemoveTask(id: number) {
-    setTasks(tasks.filter(task => task.id !== id));
+    Alert.alert(
+      "Remover item",
+      "Tem certeza que você deseja remover esse item?",
+      [
+        {
+          text: "Não",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "Sim",
+          onPress: () => setTasks(tasks.filter(task => task.id !== id)),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {}
+      }
+    );
   }
 
   
@@ -62,6 +90,7 @@ export function Home() {
         tasks={tasks} 
         toggleTaskDone={handleToggleTaskDone}
         removeTask={handleRemoveTask}
+        editTask={handleEditTask}
       />
     </View>
   )
