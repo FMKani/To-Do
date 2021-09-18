@@ -48,7 +48,11 @@ export function Home() {
   }
 
   function handleEditTask({id, taskNewTitle}: TaskEdit) {
-    // TODO
+    tasks.map(tasks => {
+      if(tasks.id == id){
+        tasks.title = taskNewTitle
+      }
+    } )
   }
 
   function handleToggleTaskDone(id: number) {

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 
+
 import {
   Image, 
   TouchableOpacity, 
@@ -14,7 +15,11 @@ from 'react-native';
 
 import {Feather} from '@expo/vector-icons';
 
+
+
 import trashIcon from '../assets/icons/trash/trash.png';
+
+import editIcon from '../assets/icons/edit/edit.png';
 
 export interface Task {
   id: number;
@@ -51,8 +56,20 @@ export function TaskItem({ item, index, toggleTaskDone, removeTask, editTask }: 
     }
 
     function handleSubmitEditing() {
-      // TODO
+      var edit = { id :item.id, taskNewTitle: editedTitle};
+      editTask(edit)
+      setEditMode(false);
     }
+
+    useEffect(() => {
+      if (textInputRef.current) {
+        if (editMode) {
+          textInputRef.current.focus();
+        } else {
+          textInputRef.current.blur();
+        }
+      }
+    }, [editMode])
     
     return (
         <>
@@ -76,21 +93,43 @@ export function TaskItem({ item, index, toggleTaskDone, removeTask, editTask }: 
                 )}
             </View>
 
-            <Text 
-                //TODO - use style prop
-            >
-                {item.title}
-            </Text>
+            <TextInput 
+              ref={textInputRef}
+              style={ item.done ? styles.taskTextDone : styles.taskText}
+              value={editedTitle}
+              editable={editMode}
+              onChangeText={setEditedTitle}
+              onSubmitEditing={handleSubmitEditing}
+/>
             </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-            testID={`trash-${index}`}
-            style={{ paddingHorizontal: 24 }}
-            onPress={() => removeTask(item.id)}
-        >
-            <Image source={trashIcon} />
-        </TouchableOpacity>
+        <View style={ styles.iconsContainer } >
+  { editMode ? (
+    <TouchableOpacity
+      onPress={handleCancelEditing}
+    >
+     <Text>X</Text>
+    </TouchableOpacity>
+  ) : (
+    <TouchableOpacity
+      onPress={handleStartEditing}
+    >
+      <Image source={editIcon} />
+    </TouchableOpacity>
+  ) }
+
+  <View 
+    style={ styles.iconsDivider }
+  />
+
+  <TouchableOpacity
+    disabled={editMode}
+    onPress={() => removeTask(item.id)}
+  >
+    <Image source={trashIcon} style={{ opacity: editMode ? 0.2 : 1 }} />
+  </TouchableOpacity>
+</View>
         </>
     )
 }
@@ -132,5 +171,12 @@ const styles = StyleSheet.create({
     color: '#1DB863',
     textDecorationLine: 'line-through',
     fontFamily: 'Inter-Medium'
+  },
+  iconsContainer: {
+    
+  },
+  iconsDivider: {
+  
   }
+
 })
