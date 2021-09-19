@@ -19,6 +19,8 @@ import {Feather} from '@expo/vector-icons';
 
 import trashIcon from '../assets/icons/trash/trash.png';
 
+import checkIcon from '../assets/icons/check/check.png';
+
 import editIcon from '../assets/icons/edit/edit.png';
 
 export interface Task {
@@ -78,12 +80,13 @@ export function TaskItem({ item, index, toggleTaskDone, removeTask, editTask }: 
             testID={`button-${index}`}
             activeOpacity={0.7}
             style={styles.taskButton}
-            //TODO - use onPress (toggle task) prop
+            onPress={() => toggleTaskDone(item.id)}
             >
             <View 
                 testID={`marker-${index}`}
-                //TODO - use style prop 
+               
             >
+              <Image  source={checkIcon} />
                 { item.done && (
                 <Feather 
                     name="check"
@@ -92,7 +95,7 @@ export function TaskItem({ item, index, toggleTaskDone, removeTask, editTask }: 
                 />
                 )}
             </View>
-
+           
             <TextInput 
               ref={textInputRef}
               style={ item.done ? styles.taskTextDone : styles.taskText}
